@@ -124,6 +124,8 @@ func (o *Options) UnmarshalPropertiesTo(key string, v interface{}) bool {
 
 // 从中读取配置
 func (o *Options) ReadFrom(v *viper.Viper) (err error) {
+	_registExtraPropertes = make(map[string]interface{})
+
 	//先设置外部注册的默认的值
 	for eachKey, eachValue := range _registExtraPropertes {
 		o.SetExtraProperties(eachKey, eachValue)

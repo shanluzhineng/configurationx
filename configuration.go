@@ -40,6 +40,10 @@ func Use(c *Configuration, opts ...ConfigurationReadOption) *Configuration {
 	}
 
 	_instance = c
+
+	// reinitialize and read
+	_instance.Options = options.NewOptions()
+	_instance.ReadFrom(_instance.viper)
 	return _instance
 }
 
