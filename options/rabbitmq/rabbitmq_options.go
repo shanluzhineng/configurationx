@@ -23,7 +23,7 @@ type DialOptions struct {
 	// Properties is table of properties that the client advertises to the server.
 	// This is an optional setting - if the application does not set this,
 	// the underlying library will use a generic set of client properties.
-	Properties map[string]interface{} `mapstructure:",squash"`
+	Properties map[string]interface{} `mapstructure:",remain"`
 
 	// Connection locale that we expect to always be en_US
 	// Even though servers must return it as per the AMQP 0-9-1 spec,
