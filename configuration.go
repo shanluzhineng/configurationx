@@ -34,7 +34,7 @@ func GetOption(key string) interface{} {
 }
 
 // 构建配置信息,将设置GetInstance()方法的返回值
-func Use(c *Configuration, opts ...ConfigurationReadOption) *Configuration {
+func Use(c *Configuration, opts ...ConfigurationReadOption) (*Configuration, error) {
 	for _, eachOpt := range opts {
 		eachOpt(c)
 	}
@@ -43,8 +43,11 @@ func Use(c *Configuration, opts ...ConfigurationReadOption) *Configuration {
 
 	// reinitialize and read
 	_instance.Options = options.NewOptions()
-	_instance.ReadFrom(_instance.viper)
-	return _instance
+	err := _instance.ReadFrom(_instance.viper)
+	if err != nil {
+		return nil, err
+	}
+	return _instance, nil
 }
 
 // 获取实例
