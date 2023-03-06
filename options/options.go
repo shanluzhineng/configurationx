@@ -14,6 +14,7 @@ import (
 	"github.com/abmpio/configurationx/options/mongodb"
 	"github.com/abmpio/configurationx/options/rabbitmq"
 	"github.com/abmpio/configurationx/options/redis"
+	"github.com/abmpio/configurationx/options/web"
 	"github.com/spf13/viper"
 )
 
@@ -27,6 +28,7 @@ type Options struct {
 	Kafka         *kafka.KafkaConfiguration
 	Consul        *consul.ConsulOptions
 	Rabbitmq      *rabbitmq.RabbitmqConfiguration
+	Web           *web.Configuration
 
 	//其它属性
 	extraProperties map[string]interface{}
@@ -69,6 +71,7 @@ func NewOptions() Options {
 		Kafka:           &kafka.KafkaConfiguration{},
 		Consul:          &consul.ConsulOptions{},
 		Rabbitmq:        &rabbitmq.RabbitmqConfiguration{},
+		Web:             web.NewConfiguration(),
 		extraProperties: make(map[string]interface{}),
 	}
 }
@@ -143,6 +146,7 @@ func (o *Options) ReadFrom(v *viper.Viper) (err error) {
 		kafka.ConfigurationKey:         o.Kafka,
 		consul.ConfigurationKey:        o.Consul,
 		rabbitmq.ConfigurationKey:      o.Rabbitmq,
+		web.ConfigurationKey:           o.Web,
 	}
 	//读取已知的配置key
 	for eachKey, eachValue := range knowedOptions {
@@ -202,6 +206,9 @@ func (c *Options) PrintJsonString() {
 	}
 	if c.Rabbitmq != nil {
 		fmt.Printf("rabbitmq:%s \r\n", c.Rabbitmq.ToJsonString())
+	}
+	if c.Web != nil {
+		fmt.Printf("web:%s \r\n", c.Web.ToJsonString())
 	}
 }
 
