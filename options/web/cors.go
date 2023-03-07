@@ -13,9 +13,16 @@ type CORS struct {
 }
 
 type CORSWhitelist struct {
-	AllowOrigin      string `mapstructure:"allow-origin" json:"allow-origin" yaml:"allow-origin"`
-	AllowMethods     string `mapstructure:"allow-methods" json:"allow-methods" yaml:"allow-methods"`
-	AllowHeaders     string `mapstructure:"allow-headers" json:"allow-headers" yaml:"allow-headers"`
-	ExposeHeaders    string `mapstructure:"expose-headers" json:"expose-headers" yaml:"expose-headers"`
-	AllowCredentials bool   `mapstructure:"allow-credentials" json:"allow-credentials" yaml:"allow-credentials"`
+	AllowedOrigins string `mapstructure:"allow-origin" json:"allow-origin" yaml:"allow-origin"`
+}
+
+func (c *CORS) GetAllowedOrigins() []string {
+	if len(c.Whitelist) <= 0 {
+		return make([]string, 0)
+	}
+	list := make([]string, 0)
+	for _, eachWhitelist := range c.Whitelist {
+		list = append(list, eachWhitelist.AllowedOrigins)
+	}
+	return list
 }
