@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -35,7 +36,7 @@ func setupViperFromDefaultPath(v *viper.Viper) {
 		err = fmt.Errorf("os.GetWd error, err:%v", err)
 		panic(err)
 	}
-	filePath := path.Join(basePath, "etc")
+	filePath := filepath.Join(basePath, "etc")
 	fileList, _ := discoverFileFromPath(filePath, supportedFileExtList)
 	if len(fileList) <= 0 {
 		// empty folder
