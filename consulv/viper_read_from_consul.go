@@ -54,7 +54,16 @@ func getChildKvPairs(c *configurationx.Configuration, keyList []string, containS
 	if len(keyList) <= 0 {
 		return childKeyList, nil
 	}
+	pathList := make([]string, 0)
 	for _, eachKey := range keyList {
+		//增加path后缀
+		if strings.HasSuffix(eachKey, "/") {
+			pathList = append(pathList, eachKey)
+		} else {
+			pathList = append(pathList, eachKey+"/")
+		}
+	}
+	for _, eachKey := range pathList {
 		thisChildKvPairs, err := c.ConfigManager.List(eachKey)
 		if err != nil {
 			c.Logger.Error(fmt.Sprintf("获取%s的子key时出现异常,详细异常信息:%s", eachKey, err.Error()))
@@ -67,7 +76,7 @@ func getChildKvPairs(c *configurationx.Configuration, keyList []string, containS
 			if eachChildKey == nil {
 				continue
 			}
-			if eachChildKey.Key == eachKey+"/" {
+			if eachChildKey.Key == eachKey {
 				//自身，直接循环
 				continue
 			}

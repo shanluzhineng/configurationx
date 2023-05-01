@@ -3,7 +3,6 @@ package configurationx
 import (
 	"fmt"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 
@@ -36,14 +35,14 @@ func setupViperFromDefaultPath(v *viper.Viper) {
 		err = fmt.Errorf("os.GetWd error, err:%v", err)
 		panic(err)
 	}
-	filePath := filepath.Join(basePath, "etc")
-	fileList, _ := discoverFileFromPath(filePath, supportedFileExtList)
+	configFilePath := filepath.Join(basePath, "etc")
+	fileList, _ := discoverFileFromPath(configFilePath, supportedFileExtList)
 	if len(fileList) <= 0 {
 		// empty folder
 		return
 	}
 	for _, eachFile := range fileList {
-		fileName := path.Base(eachFile)
+		fileName := filepath.Base(eachFile)
 		i := strings.LastIndex(fileName, ".")
 		if i == -1 {
 			continue
@@ -55,7 +54,7 @@ func setupViperFromDefaultPath(v *viper.Viper) {
 		}
 		v.SetConfigType(configType)
 		v.SetConfigName(configName)
-		v.AddConfigPath(filePath)
+		v.AddConfigPath(configFilePath)
 		err := v.ReadInConfig()
 		if err != nil {
 			err = fmt.Errorf("读取配置文件时出现异常,文件名:%s,异常信息:%s", eachFile, err.Error())

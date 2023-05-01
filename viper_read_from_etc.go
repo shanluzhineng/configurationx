@@ -31,7 +31,7 @@ var (
 // 从etc目录的subPath下读取指定应用名称的配置信息
 func (c *Configuration) readFromEtcFolder(subPath string, name string) *Configuration {
 	if runtime.GOOS != string(GOOS_Linux) {
-		c.Logger.Info("windows环境将不读取/etc目录中的配置")
+		// windows环境将不读取/etc目录中的配置"
 		return c
 	}
 	if name == "" {
@@ -47,6 +47,33 @@ func (c *Configuration) readFromEtcFolder(subPath string, name string) *Configur
 		return c
 	}
 	basePath := path.Join("/etc", c.EtcSubPath)
+	for eachExtName := range _supportExtName {
+		c.readAndMergeFile(basePath, name, eachExtName)
+	}
+	return c
+}
+
+func (c *Configuration) readFromWindowsUserFolder(subPath string, name string) *Configuration {
+	if runtime.GOOS != string(GOOS_Windows) {
+		return c
+	}
+	if name == "" {
+		name = getExecutableFileName()
+		if len(name) <= 0 {
+			return c
+		}
+	}
+	if len(subPath) <= 0 {
+		subPath = c.EtcSubPath
+	}
+	if len(subPath) <= 0 {
+		return c
+	}
+	userDir, err := os.UserHomeDir()
+	if err != nil {
+		return c
+	}
+	basePath := filepath.Join(userDir, c.EtcSubPath)
 	for eachExtName := range _supportExtName {
 		c.readAndMergeFile(basePath, name, eachExtName)
 	}
@@ -90,6 +117,10 @@ func getExecutableFileName() string {
 
 func ReadFromEtcFolder(fileName string) ConfigurationReadOption {
 	return func(c *Configuration) {
-		c.readFromEtcFolder(c.EtcSubPath, fileName)
+		if runtime.GOOS != string(GOOS_Linux) {
+			c.readFromWindowsUserFolder(c.EtcSubPath, fileName)
+		} else {
+			c.readFromEtcFolder(c.EtcSubPath, fileName)
+		}
 	}
 }
