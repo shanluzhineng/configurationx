@@ -14,6 +14,7 @@ type CasdoorOptions struct {
 	OrganizationName string `json:"organizationName,omitempty"`
 	ApplicationName  string `json:"applicationName,omitempty"`
 
+	Jwt JwtOptions `json:"jwt,omitempty" mapstructure:"jwt"`
 	// file path for Certificate
 	CertificateFilePath string `json:"certificateFilePath,omitempty"`
 }
@@ -23,5 +24,8 @@ func ReadFrom(v *viper.Viper) (CasdoorOptions, error) {
 	var options CasdoorOptions
 
 	err := v.UnmarshalKey(ConfigurationKey, &options)
+	if err == nil {
+		options.Jwt.Normalize()
+	}
 	return options, err
 }
