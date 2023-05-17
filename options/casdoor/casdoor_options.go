@@ -1,6 +1,12 @@
 package casdoor
 
-import "github.com/spf13/viper"
+import (
+	"io"
+	"os"
+	"strings"
+
+	"github.com/spf13/viper"
+)
 
 const (
 	ConfigurationKey string = "casdoor"
@@ -14,7 +20,8 @@ type CasdoorOptions struct {
 	OrganizationName string `json:"organizationName,omitempty"`
 	ApplicationName  string `json:"applicationName,omitempty"`
 
-	Jwt JwtOptions `json:"jwt,omitempty" mapstructure:"jwt"`
+	Disabled bool       `json:"disabled,omitempty"`
+	Jwt      JwtOptions `json:"jwt,omitempty" mapstructure:"jwt"`
 	// file path for Certificate
 	CertificateFilePath string `json:"certificateFilePath,omitempty"`
 }
@@ -28,4 +35,27 @@ func ReadFrom(v *viper.Viper) (CasdoorOptions, error) {
 		options.Jwt.Normalize()
 	}
 	return options, err
+}
+
+func (o *CasdoorOptions) Normalize() {
+	if len(o.Certificate) <= 0 && strings.TrimSpace(o.CertificateFilePath) != "" {
+		certData, err := readFile(o.CertificateFilePath)
+		if err != nil {
+			panic(err)
+		}
+		o.Certificate = string(certData)
+	}
+}
+
+// read data from file
+func readFile(filePath string) ([]byte, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+	// defer the closing of our jsonFile so that we can parse it later on
+	defer file.Close()
+
+	byteValue, err := io.ReadAll(file)
+	return byteValue, err
 }
