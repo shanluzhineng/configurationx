@@ -45,6 +45,7 @@ func (o *CasdoorOptions) Normalize() {
 		}
 		o.Certificate = string(certData)
 	}
+	o.Jwt.Normalize()
 }
 
 // read data from file
