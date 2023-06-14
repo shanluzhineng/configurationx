@@ -3,6 +3,7 @@ package redis
 import "time"
 
 type RedisOptions struct {
+	KeyPrefix string `json:"keyPrefix,omitempty"`
 	// The network type, either tcp or unix.
 	// Default is tcp.
 	Network string `json:"network,omitempty"`
