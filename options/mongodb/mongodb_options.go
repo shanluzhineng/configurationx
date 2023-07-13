@@ -4,6 +4,9 @@ import "time"
 
 type MongodbOptions struct {
 	Uri string `json:"uri,omitempty"`
+	//是否开启mongodb命令监控，默认值为false
+	EnableCommandMonitor *bool  `json:"enableCommandMonitor,omitempty"`
+	Database             string `json:"database,omitempty"`
 
 	ConnectTimeout       *time.Duration `json:"connectTimeout,omitempty"`
 	ConnectTimeoutSet    *bool          `json:"connectTimeoutSet,omitempty"`
@@ -20,7 +23,4 @@ type MongodbOptions struct {
 	MaxConnectingSet     *bool          `json:"maxConnectingSet,omitempty"`
 	Password             *string        `json:"password,omitempty"`
 	PasswordSet          *bool          `json:"passwordSet,omitempty"`
-
-	//是否开启mongodb命令监控，默认值为false
-	EnableCommandMonitor *bool `json:"enableCommandMonitor,omitempty"`
 }
