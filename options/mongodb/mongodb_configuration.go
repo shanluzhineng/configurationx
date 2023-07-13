@@ -30,6 +30,9 @@ func (c *MongodbConfiguration) GetOptions(aliasName string) *MongodbOptions {
 	if len(c.MongodbList) <= 0 {
 		return nil
 	}
+	if len(aliasName) <= 0 {
+		aliasName = AliasName_Default
+	}
 	item, ok := c.MongodbList[aliasName]
 	if !ok {
 		return nil
