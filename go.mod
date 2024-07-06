@@ -1,4 +1,4 @@
-module github.com/abmpio/configurationx
+module github.com/shanluzhineng/configurationx
 
 go 1.18
 

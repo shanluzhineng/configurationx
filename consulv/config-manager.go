@@ -1,7 +1,7 @@
 package consulv
 
 import (
-	"github.com/abmpio/configurationx"
+	"github.com/shanluzhineng/configurationx"
 )
 
 type standardConfigManager struct {

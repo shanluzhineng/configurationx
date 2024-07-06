@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/abmpio/configurationx"
+	"github.com/shanluzhineng/configurationx"
 	"github.com/hashicorp/consul/api"
 )
 

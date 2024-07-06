@@ -3,7 +3,7 @@ package configurationx
 import (
 	"errors"
 
-	"github.com/abmpio/configurationx/options"
+	"github.com/shanluzhineng/configurationx/options"
 	"github.com/spf13/viper"
 )
 

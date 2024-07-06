@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/abmpio/configurationx"
-	"github.com/abmpio/configurationx/options/consul"
+	"github.com/shanluzhineng/configurationx"
+	"github.com/shanluzhineng/configurationx/options/consul"
 )
 
 func ReadFromConsul(consulOptions consul.ConsulOptions, consulPathList []string) *configurationx.Configuration {
